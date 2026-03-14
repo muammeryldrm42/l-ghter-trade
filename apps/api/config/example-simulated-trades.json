@@ -1,0 +1,102 @@
+{
+  "_comment": "Example output of simulated trade logs from paper trading mode",
+  "trades": [
+    {
+      "id": "trade_m4k2x_a1b2c3d4",
+      "symbol": "BTC",
+      "side": "LONG",
+      "entryPrice": "43250.00",
+      "exitPrice": "46890.00",
+      "size": "0.00461",
+      "leverage": 3,
+      "entryFee": "0.09951",
+      "exitFee": "0.10788",
+      "fundingFees": "0.02150",
+      "realizedPnl": "16.6004",
+      "holdDurationMs": 14400000,
+      "exitReason": "TAKE_PROFIT",
+      "signal": {
+        "strategyName": "Ensemble",
+        "direction": "LONG",
+        "confidence": 0.778,
+        "rationale": "Ensemble agreement: TrendFollowing, Momentum | EMA(21/55) bullish alignment, ADX=31.2, RSI=54.3",
+        "agreementScore": 0.812
+      },
+      "riskAssessment": {
+        "approved": true,
+        "adjustedLeverage": 3,
+        "score": 74,
+        "liquidationDistance": 0.312,
+        "warnings": ["ADVERSE_FUNDING: rate=0.000120"]
+      }
+    },
+    {
+      "id": "trade_p9q7r_e5f6g7h8",
+      "symbol": "ETH",
+      "side": "SHORT",
+      "entryPrice": "2285.50",
+      "exitPrice": "2185.20",
+      "size": "0.0876",
+      "leverage": 3,
+      "entryFee": "0.10009",
+      "exitFee": "0.09578",
+      "fundingFees": "-0.01220",
+      "realizedPnl": "8.6468",
+      "holdDurationMs": 21600000,
+      "exitReason": "TAKE_PROFIT",
+      "signal": {
+        "strategyName": "Ensemble",
+        "direction": "SHORT",
+        "confidence": 0.712,
+        "rationale": "Ensemble agreement: TrendFollowing, MeanReversion | EMA bearish alignment, price at upper BB",
+        "agreementScore": 0.724
+      },
+      "riskAssessment": {
+        "approved": true,
+        "adjustedLeverage": 3,
+        "score": 68,
+        "liquidationDistance": 0.298,
+        "warnings": []
+      }
+    },
+    {
+      "id": "trade_x2y3z_i9j0k1l2",
+      "symbol": "SOL",
+      "side": "LONG",
+      "entryPrice": "98.40",
+      "exitPrice": "93.20",
+      "size": "2.032",
+      "leverage": 2,
+      "entryFee": "0.10013",
+      "exitFee": "0.09494",
+      "fundingFees": "0.00850",
+      "realizedPnl": "-10.6646",
+      "holdDurationMs": 7200000,
+      "exitReason": "STOP_LOSS",
+      "signal": {
+        "strategyName": "Ensemble",
+        "direction": "LONG",
+        "confidence": 0.671,
+        "rationale": "Ensemble agreement: Breakout | Bullish breakout above 20-period high, vol=1.72x avg",
+        "agreementScore": 0.618
+      },
+      "riskAssessment": {
+        "approved": true,
+        "adjustedLeverage": 2,
+        "score": 61,
+        "liquidationDistance": 0.475,
+        "warnings": ["SPREAD_ELEVATED: 18.2 bps", "DRAWDOWN_WARNING: 3.2% of limit"]
+      }
+    }
+  ],
+  "summary": {
+    "totalTrades": 3,
+    "winningTrades": 2,
+    "losingTrades": 1,
+    "winRate": 0.667,
+    "totalPnl": "14.5826",
+    "totalFees": "0.59833",
+    "initialBalance": "10000.00",
+    "finalBalance": "10014.58"
+  }
+}

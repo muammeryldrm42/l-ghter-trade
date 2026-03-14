@@ -1,0 +1,47 @@
+FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+WORKDIR /app
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+FROM base AS deps
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY packages/common/package.json packages/common/
+COPY packages/strategy/package.json packages/strategy/
+COPY packages/risk/package.json packages/risk/
+COPY packages/execution/package.json packages/execution/
+COPY packages/backtest/package.json packages/backtest/
+COPY apps/api/package.json apps/api/
+RUN pnpm install --frozen-lockfile --filter "@lighter-bot/api..."
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+FROM deps AS builder
+COPY packages/ packages/
+COPY apps/api/ apps/api/
+COPY tsconfig.json ./
+RUN pnpm --filter "@lighter-bot/common" build \
+ && pnpm --filter "@lighter-bot/strategy" build \
+ && pnpm --filter "@lighter-bot/risk" build \
+ && pnpm --filter "@lighter-bot/execution" build \
+ && pnpm --filter "@lighter-bot/backtest" build \
+ && pnpm --filter "@lighter-bot/api" build \
+ && pnpm --filter "@lighter-bot/api" exec prisma generate
+
+# ── Runtime ───────────────────────────────────────────────────────────────────
+FROM node:20-alpine AS runner
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+WORKDIR /app
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser  --system --uid 1001 botuser
+
+COPY --from=builder --chown=botuser:nodejs /app/node_modules         ./node_modules
+COPY --from=builder --chown=botuser:nodejs /app/packages/common/dist  ./packages/common/dist
+COPY --from=builder --chown=botuser:nodejs /app/packages/strategy/dist ./packages/strategy/dist
+COPY --from=builder --chown=botuser:nodejs /app/packages/risk/dist    ./packages/risk/dist
+COPY --from=builder --chown=botuser:nodejs /app/packages/execution/dist ./packages/execution/dist
+COPY --from=builder --chown=botuser:nodejs /app/packages/backtest/dist ./packages/backtest/dist
+COPY --from=builder --chown=botuser:nodejs /app/apps/api/dist         ./apps/api/dist
+COPY --from=builder --chown=botuser:nodejs /app/apps/api/prisma       ./apps/api/prisma
+
+USER botuser
+EXPOSE 3001
+CMD ["node", "apps/api/dist/server.js"]

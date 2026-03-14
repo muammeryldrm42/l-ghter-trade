@@ -1,0 +1,170 @@
+# ════════════════════════════════════════════════════════════════════════════════
+# Example Strategy Configurations
+# Reference these when customizing strategy parameters.
+# All params shown are the defaults — only override what you need.
+# ════════════════════════════════════════════════════════════════════════════════
+
+# ── BTC Strategy Config ────────────────────────────────────────────────────────
+btc_strategies:
+
+  trend_following:
+    type: TREND_FOLLOWING
+    symbol: BTC
+    enabled: true
+    weight: 0.35
+    timeframes: ["1h", "4h"]
+    params:
+      fastEmaPeriod: 21
+      slowEmaPeriod: 55
+      adxPeriod: 14
+      adxThreshold: 25        # Minimum ADX for trend confirmation
+      rsiPeriod: 14
+      rsiOverbought: 70       # Don't long above this
+      rsiOversold: 30         # Don't short below this
+      atrPeriod: 14
+      atrStopMultiplier: 1.5  # Stop = entry ± ATR * 1.5
+      atrTpMultiplier: 3.0    # TP  = entry ± ATR * 3.0
+      minCandleCount: 80
+
+  momentum:
+    type: MOMENTUM
+    symbol: BTC
+    enabled: true
+    weight: 0.30
+    timeframes: ["15m", "1h"]
+    params:
+      macdFast: 12
+      macdSlow: 26
+      macdSignal: 9
+      rsiPeriod: 14
+      rsiMomentumMin: 45      # RSI must be above 45 for longs
+      obvEmaPeriod: 20
+      atrPeriod: 14
+      atrStopMultiplier: 1.5
+      atrTpMultiplier: 2.5
+      higherTfRequired: true  # Require 1h bias for 15m entries
+      minCandleCount: 80
+
+  breakout:
+    type: BREAKOUT
+    symbol: BTC
+    enabled: true
+    weight: 0.20
+    timeframes: ["1h"]
+    params:
+      lookbackPeriod: 20      # N-period high/low channel
+      volumeMultiplier: 1.5   # Volume must be 1.5x average
+      atrPeriod: 14
+      stopAtrMultiplier: 1.0  # Tighter stop for breakouts
+      tpAtrMultiplier: 3.0
+      minCandleCount: 50
+
+  mean_reversion:
+    type: MEAN_REVERSION
+    symbol: BTC
+    enabled: true
+    weight: 0.15
+    timeframes: ["15m"]
+    params:
+      bbPeriod: 20
+      bbStdDev: 2
+      rsiPeriod: 14
+      rsiOversold: 35         # More conservative than trend following
+      rsiOverbought: 65
+      stochKPeriod: 14
+      stochDPeriod: 3
+      atrPeriod: 14
+      atrStopMultiplier: 1.2
+      minCandleCount: 60
+      minBandwidthPct: 0.02   # Only trade when bands are >2% wide
+
+# ── ETH Strategy Config ────────────────────────────────────────────────────────
+eth_strategies:
+  # ETH behaves similarly to BTC but with slightly higher volatility tolerance
+  trend_following:
+    type: TREND_FOLLOWING
+    symbol: ETH
+    enabled: true
+    weight: 0.35
+    timeframes: ["1h", "4h"]
+    params:
+      fastEmaPeriod: 21
+      slowEmaPeriod: 55
+      adxThreshold: 22          # Lower ADX threshold — ETH trends differently
+      atrStopMultiplier: 1.8    # Wider stops for ETH volatility
+      atrTpMultiplier: 3.5
+
+  momentum:
+    type: MOMENTUM
+    symbol: ETH
+    enabled: true
+    weight: 0.35
+    timeframes: ["15m", "1h"]
+    params:
+      higherTfRequired: true
+      atrStopMultiplier: 1.5
+      atrTpMultiplier: 2.5
+
+  breakout:
+    type: BREAKOUT
+    symbol: ETH
+    enabled: true
+    weight: 0.20
+    timeframes: ["1h"]
+    params:
+      volumeMultiplier: 1.4   # Slightly lower — ETH volume can be thin
+
+  mean_reversion:
+    type: MEAN_REVERSION
+    symbol: ETH
+    enabled: false             # Disabled for ETH — too trend-driven
+
+# ── SOL Strategy Config ────────────────────────────────────────────────────────
+sol_strategies:
+  # SOL is more volatile — higher confidence bars, wider stops
+  trend_following:
+    type: TREND_FOLLOWING
+    symbol: SOL
+    enabled: true
+    weight: 0.40               # Higher weight to trend — SOL trends hard
+    timeframes: ["1h", "4h"]
+    params:
+      fastEmaPeriod: 13        # Shorter periods for faster reaction
+      slowEmaPeriod: 34
+      adxThreshold: 28         # Higher ADX threshold — need stronger trend
+      atrStopMultiplier: 2.0   # Much wider stops for SOL
+      atrTpMultiplier: 4.0
+
+  momentum:
+    type: MOMENTUM
+    symbol: SOL
+    enabled: true
+    weight: 0.35
+    timeframes: ["15m", "1h"]
+    params:
+      rsiMomentumMin: 50       # More conservative for SOL
+      atrStopMultiplier: 2.0
+      atrTpMultiplier: 3.0
+
+  breakout:
+    type: BREAKOUT
+    symbol: SOL
+    enabled: true
+    weight: 0.25
+    timeframes: ["1h"]
+    params:
+      lookbackPeriod: 15       # Shorter lookback — SOL breaks faster
+      volumeMultiplier: 2.0    # Need strong volume confirmation for SOL
+
+  mean_reversion:
+    type: MEAN_REVERSION
+    symbol: SOL
+    enabled: false             # Disabled — SOL is not a good mean-reversion asset
+
+# ── Ensemble Config ────────────────────────────────────────────────────────────
+ensemble:
+  minAgreementScore: 0.60       # At least 60% weighted vote agreement
+  minEnsembleConfidence: 0.65   # Final confidence after weighting
+  minStrategiesVoting: 2        # At least 2 strategies must agree
+  blockOnHighVolatility: false  # Let risk engine handle volatile markets
+  blockVolatilityPercentile: 90 # Block above 90th percentile volatility

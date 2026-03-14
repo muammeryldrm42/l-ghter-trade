@@ -1,0 +1,123 @@
+{
+  "sessionId": "session_abc123",
+  "mode": "PAPER",
+  "initialBalance": "10000.00",
+  "timestamp": "2024-03-15T14:32:00Z",
+  "trades": [
+    {
+      "id": "trade_lxk9f_a1b2c3d4",
+      "symbol": "BTC",
+      "side": "LONG",
+      "entryPrice": "67240.50",
+      "exitPrice": "69850.25",
+      "size": "0.00298",
+      "leverage": 3,
+      "entryFee": "0.10",
+      "exitFee": "0.10",
+      "fundingFees": "0.03",
+      "realizedPnl": "7.59",
+      "holdDurationMs": 14400000,
+      "exitReason": "TAKE_PROFIT",
+      "riskAssessment": {
+        "approved": true,
+        "score": 78,
+        "adjustedLeverage": 3,
+        "liquidationDistance": 0.312,
+        "warnings": [],
+        "leverageDecision": {
+          "leverage": 3,
+          "reason": "base=3x, vol_reduction not triggered",
+          "requiresHigherConfidenceThreshold": 0
+        }
+      },
+      "signal": {
+        "direction": "LONG",
+        "confidence": 0.742,
+        "strategyName": "Ensemble",
+        "rationale": "Ensemble agreement: TrendFollowing, Momentum | EMA(21/55) bullish alignment, ADX=31.2, RSI=54.1",
+        "agreementScore": 0.82,
+        "regimeAdjusted": true,
+        "tags": ["ensemble", "trend", "ema-crossover", "trending_bullish"]
+      },
+      "lifecycleEvents": [
+        { "phase": "SIGNAL_GENERATED", "timestamp": "2024-03-15T10:32:00Z" },
+        { "phase": "RISK_ASSESSED", "timestamp": "2024-03-15T10:32:00Z", "data": { "approved": true, "score": 78 } },
+        { "phase": "ORDER_SUBMITTED", "timestamp": "2024-03-15T10:32:00Z", "data": { "clientOrderId": "ltbot_btc_long_abc123" } },
+        { "phase": "ORDER_FILLED", "timestamp": "2024-03-15T10:32:00Z", "data": { "fillPrice": "67240.50", "latencyMs": 165 } },
+        { "phase": "POSITION_OPEN", "timestamp": "2024-03-15T10:32:00Z", "data": { "liquidationPrice": "43520.33" } },
+        { "phase": "TP_TRIGGERED", "timestamp": "2024-03-15T14:32:00Z", "data": { "exitPrice": "69850.25" } }
+      ]
+    },
+    {
+      "id": "trade_lxk9f_e5f6g7h8",
+      "symbol": "ETH",
+      "side": "SHORT",
+      "entryPrice": "3520.75",
+      "exitPrice": "3420.10",
+      "size": "0.0285",
+      "leverage": 3,
+      "entryFee": "0.05",
+      "exitFee": "0.05",
+      "fundingFees": "-0.01",
+      "realizedPnl": "2.82",
+      "holdDurationMs": 7200000,
+      "exitReason": "TAKE_PROFIT",
+      "riskAssessment": {
+        "approved": true,
+        "score": 72,
+        "adjustedLeverage": 3,
+        "liquidationDistance": 0.295,
+        "warnings": ["ADVERSE_FUNDING: rate=0.000210, holding SHORT is expensive"]
+      },
+      "signal": {
+        "direction": "SHORT",
+        "confidence": 0.698,
+        "strategyName": "Ensemble",
+        "rationale": "Ensemble agreement: TrendFollowing, Breakout | Bearish breakdown below 3550.00 (20-period low), vol=1.8x avg",
+        "agreementScore": 0.71,
+        "tags": ["ensemble", "breakout", "bearish-breakdown", "trending_bearish"]
+      }
+    },
+    {
+      "id": "trade_lxk9f_i9j0k1l2",
+      "symbol": "SOL",
+      "side": "LONG",
+      "entryPrice": "142.50",
+      "exitPrice": "138.20",
+      "size": "0.700",
+      "leverage": 2,
+      "entryFee": "0.05",
+      "exitFee": "0.05",
+      "fundingFees": "0.01",
+      "realizedPnl": "-3.04",
+      "holdDurationMs": 3600000,
+      "exitReason": "STOP_LOSS",
+      "riskAssessment": {
+        "approved": true,
+        "score": 64,
+        "adjustedLeverage": 2,
+        "liquidationDistance": 0.441,
+        "warnings": ["SPREAD_ELEVATED: 14.2 bps"]
+      },
+      "signal": {
+        "direction": "LONG",
+        "confidence": 0.668,
+        "strategyName": "Ensemble",
+        "rationale": "Ensemble agreement: Momentum | MACD histogram accelerating bullish",
+        "agreementScore": 0.61,
+        "tags": ["ensemble", "momentum", "macd"]
+      }
+    }
+  ],
+  "summary": {
+    "totalTrades": 3,
+    "winningTrades": 2,
+    "losingTrades": 1,
+    "winRate": 0.667,
+    "totalPnl": "7.37",
+    "totalFees": "0.40",
+    "netPnl": "6.97",
+    "avgHoldHours": 2.78,
+    "finalBalance": "10006.97"
+  }
+}

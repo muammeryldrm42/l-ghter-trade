@@ -1,0 +1,43 @@
+FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+WORKDIR /app
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+FROM base AS deps
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY packages/common/package.json packages/common/
+COPY apps/dashboard/package.json apps/dashboard/
+RUN pnpm install --frozen-lockfile --filter "@lighter-bot/dashboard..."
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+FROM deps AS builder
+COPY packages/common/ packages/common/
+COPY apps/dashboard/ apps/dashboard/
+COPY tsconfig.json ./
+
+ARG NEXT_PUBLIC_API_URL=http://localhost:3001
+ARG NEXT_PUBLIC_WS_URL=ws://localhost:3001/ws
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN pnpm --filter "@lighter-bot/common" build \
+ && pnpm --filter "@lighter-bot/dashboard" build
+
+# ── Runtime ───────────────────────────────────────────────────────────────────
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser  --system --uid 1001 nextjs
+
+COPY --from=builder /app/apps/dashboard/.next/standalone ./
+COPY --from=builder /app/apps/dashboard/.next/static     ./apps/dashboard/.next/static
+COPY --from=builder /app/apps/dashboard/public           ./apps/dashboard/public
+
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000
+CMD ["node", "apps/dashboard/server.js"]

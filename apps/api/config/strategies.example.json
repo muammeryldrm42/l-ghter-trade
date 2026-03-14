@@ -1,0 +1,127 @@
+{
+  "_comment": "Example strategy configuration. Copy to strategies.json and tune parameters.",
+  "strategies": [
+    {
+      "type": "TREND_FOLLOWING",
+      "symbol": "BTC",
+      "enabled": true,
+      "weight": 0.35,
+      "timeframes": ["1h", "4h"],
+      "params": {
+        "fastEmaPeriod": 21,
+        "slowEmaPeriod": 55,
+        "adxPeriod": 14,
+        "adxThreshold": 25,
+        "rsiPeriod": 14,
+        "rsiOverbought": 70,
+        "rsiOversold": 30,
+        "atrPeriod": 14,
+        "atrStopMultiplier": 1.5,
+        "atrTpMultiplier": 3.0
+      }
+    },
+    {
+      "type": "MEAN_REVERSION",
+      "symbol": "BTC",
+      "enabled": true,
+      "weight": 0.15,
+      "timeframes": ["15m"],
+      "params": {
+        "bbPeriod": 20,
+        "bbStdDev": 2,
+        "rsiOversold": 35,
+        "rsiOverbought": 65,
+        "atrStopMultiplier": 1.2,
+        "minBandwidthPct": 0.02
+      }
+    },
+    {
+      "type": "BREAKOUT",
+      "symbol": "BTC",
+      "enabled": true,
+      "weight": 0.20,
+      "timeframes": ["1h"],
+      "params": {
+        "lookbackPeriod": 20,
+        "volumeMultiplier": 1.5,
+        "atrStopMultiplier": 1.0,
+        "atrTpMultiplier": 3.0
+      }
+    },
+    {
+      "type": "MOMENTUM",
+      "symbol": "BTC",
+      "enabled": true,
+      "weight": 0.30,
+      "timeframes": ["15m", "1h"],
+      "params": {
+        "macdFast": 12,
+        "macdSlow": 26,
+        "macdSignal": 9,
+        "rsiMomentumMin": 45,
+        "higherTfRequired": true
+      }
+    },
+    {
+      "type": "TREND_FOLLOWING",
+      "symbol": "ETH",
+      "enabled": true,
+      "weight": 0.35,
+      "timeframes": ["1h", "4h"],
+      "params": { "adxThreshold": 25, "atrStopMultiplier": 1.5, "atrTpMultiplier": 3.0 }
+    },
+    {
+      "type": "MOMENTUM",
+      "symbol": "ETH",
+      "enabled": true,
+      "weight": 0.30,
+      "timeframes": ["15m", "1h"],
+      "params": {}
+    },
+    {
+      "type": "BREAKOUT",
+      "symbol": "ETH",
+      "enabled": true,
+      "weight": 0.20,
+      "timeframes": ["1h"],
+      "params": {}
+    },
+    {
+      "type": "MEAN_REVERSION",
+      "symbol": "ETH",
+      "enabled": true,
+      "weight": 0.15,
+      "timeframes": ["15m"],
+      "params": {}
+    },
+    {
+      "type": "TREND_FOLLOWING",
+      "symbol": "SOL",
+      "enabled": true,
+      "weight": 0.40,
+      "timeframes": ["1h"],
+      "params": {
+        "adxThreshold": 28,
+        "atrStopMultiplier": 1.8,
+        "atrTpMultiplier": 3.5,
+        "_comment": "SOL is more volatile — wider stops, higher ADX bar"
+      }
+    },
+    {
+      "type": "MOMENTUM",
+      "symbol": "SOL",
+      "enabled": true,
+      "weight": 0.35,
+      "timeframes": ["15m", "1h"],
+      "params": { "rsiMomentumMin": 48 }
+    },
+    {
+      "type": "BREAKOUT",
+      "symbol": "SOL",
+      "enabled": true,
+      "weight": 0.25,
+      "timeframes": ["1h"],
+      "params": { "volumeMultiplier": 1.8 }
+    }
+  ]
+}

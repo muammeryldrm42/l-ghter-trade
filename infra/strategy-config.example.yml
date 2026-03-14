@@ -1,0 +1,87 @@
+# Example Strategy Configuration
+# Used to tune strategy parameters per symbol and timeframe.
+# These values are passed as `config.params` to each strategy.
+
+strategies:
+  - type: TREND_FOLLOWING
+    symbol: BTC
+    enabled: true
+    weight: 0.35
+    timeframes: [1h, 4h]
+    params:
+      fastEmaPeriod: 21
+      slowEmaPeriod: 55
+      adxPeriod: 14
+      adxThreshold: 25
+      rsiPeriod: 14
+      rsiOverbought: 70
+      rsiOversold: 30
+      atrPeriod: 14
+      atrStopMultiplier: 1.5
+      atrTpMultiplier: 3.0
+
+  - type: MEAN_REVERSION
+    symbol: BTC
+    enabled: true
+    weight: 0.20
+    timeframes: [15m]
+    params:
+      bbPeriod: 20
+      bbStdDev: 2
+      rsiPeriod: 14
+      rsiOversold: 35
+      rsiOverbought: 65
+      atrStopMultiplier: 1.2
+      minBandwidthPct: 0.02
+
+  - type: BREAKOUT
+    symbol: BTC
+    enabled: true
+    weight: 0.25
+    timeframes: [1h]
+    params:
+      lookbackPeriod: 20
+      volumeMultiplier: 1.5
+      atrStopMultiplier: 1.0
+      tpAtrMultiplier: 3.0
+
+  - type: MOMENTUM
+    symbol: BTC
+    enabled: true
+    weight: 0.30
+    timeframes: [15m, 1h]
+    params:
+      macdFast: 12
+      macdSlow: 26
+      macdSignal: 9
+      rsiMomentumMin: 45
+      atrStopMultiplier: 1.5
+      higherTfRequired: true
+
+  # ETH — same strategies, slightly wider stops
+  - type: TREND_FOLLOWING
+    symbol: ETH
+    enabled: true
+    weight: 0.35
+    timeframes: [1h, 4h]
+    params:
+      atrStopMultiplier: 1.8
+      atrTpMultiplier: 3.5
+
+  # SOL — higher confidence threshold, wider stops
+  - type: TREND_FOLLOWING
+    symbol: SOL
+    enabled: true
+    weight: 0.35
+    timeframes: [15m, 1h]
+    params:
+      adxThreshold: 28
+      atrStopMultiplier: 2.0
+      atrTpMultiplier: 3.5
+
+ensemble:
+  minAgreementScore: 0.60
+  minEnsembleConfidence: 0.65
+  minStrategiesVoting: 2
+  blockOnHighVolatility: false
+  blockVolatilityPercentile: 90
