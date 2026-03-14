@@ -1,0 +1,6 @@
+{
+  "framework": "nextjs",
+  "rootDirectory": "apps/dashboard",
+  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @lighter-bot/common build && cd apps/dashboard && pnpm build",
+  "installCommand": "cd ../.. && pnpm install"
+}

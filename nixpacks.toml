@@ -1,0 +1,22 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
+[phases.install]
+cmds = [
+  "npm install -g pnpm@9.15.0",
+  "pnpm install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = [
+  "pnpm --filter @lighter-bot/common build",
+  "pnpm --filter @lighter-bot/strategy build",
+  "pnpm --filter @lighter-bot/risk build",
+  "pnpm --filter @lighter-bot/execution build",
+  "pnpm --filter @lighter-bot/backtest build",
+  "pnpm --filter @lighter-bot/api exec prisma generate",
+  "pnpm --filter @lighter-bot/api build"
+]
+
+[start]
+cmd = "pnpm --filter @lighter-bot/api start:railway"

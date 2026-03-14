@@ -1,0 +1,38 @@
+{
+  "name": "lighter-trading-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Production-grade simulation-first trading framework for Lighter perpetuals (BTC/ETH/SOL)",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "db:generate": "pnpm --filter @lighter-bot/api prisma generate",
+    "db:migrate": "pnpm --filter @lighter-bot/api prisma migrate dev",
+    "db:studio": "pnpm --filter @lighter-bot/api prisma studio",
+    "simulate": "pnpm --filter @lighter-bot/api start:simulate",
+    "backtest": "pnpm --filter @lighter-bot/backtest run:cli"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "prettier": "^3.4.2",
+    "eslint": "^9.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.0",
+    "@typescript-eslint/parser": "^8.19.0",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
