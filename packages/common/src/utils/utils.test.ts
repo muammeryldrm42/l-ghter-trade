@@ -16,7 +16,7 @@ import {
   isValidPrice,
   isValidSize,
   generateClientOrderId,
-} from "../src/utils/index.js";
+} from "./index.js";
 
 describe("Liquidation price calculation", () => {
   it("LONG liq price is below entry", () => {
