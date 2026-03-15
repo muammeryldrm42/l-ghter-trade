@@ -131,6 +131,10 @@ nixpacks.toml dosyasının repoda olduğundan emin ol.
 Build sırası yanlış. nixpacks.toml'daki build adımlarını kontrol et — 
 common → strategy → risk → execution → backtest → api sırasında olmalı.
 
+Ek olarak `railway.toml` start komutunun workspace-aware olması gerekir:
+`pnpm --filter @lighter-bot/api start:railway`
+(root'ta direkt `node apps/api/dist/server.js` çalıştırmak Prisma context'ini bozabilir).
+
 ### Vercel: "Module not found @lighter-bot/common"
 Root Directory'nin `apps/dashboard` olarak ayarlandığından emin ol.
 Vercel ayarları: Project Settings → General → Root Directory.
@@ -138,6 +142,9 @@ Vercel ayarları: Project Settings → General → Root Directory.
 ### Vercel: Build Command hatası
 Vercel'in monorepo için custom build command'a ihtiyacı var.
 Settings → Git → "Ignored Build Step" boş olsun.
+
+Önerilen command:
+`pnpm --filter @lighter-bot/common build && pnpm --filter @lighter-bot/dashboard build`
 
 ### Dashboard WebSocket bağlanmıyor
 - Railway URL'inin `wss://` (değil `ws://`) ile başladığından emin ol

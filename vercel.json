@@ -1,6 +1,5 @@
 {
   "framework": "nextjs",
-  "rootDirectory": "apps/dashboard",
-  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @lighter-bot/common build && cd apps/dashboard && pnpm build",
-  "installCommand": "cd ../.. && pnpm install"
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter @lighter-bot/common build && pnpm --filter @lighter-bot/dashboard build"
 }

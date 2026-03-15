@@ -4,6 +4,7 @@
  */
 
 import { EventEmitter } from "events";
+import WebSocket from "ws";
 import type { Symbol, Ticker, OrderBook, Trade, Candle } from "@lighter-bot/common";
 import { createChildLogger } from "@lighter-bot/common";
 import { sleep } from "@lighter-bot/common";
@@ -86,7 +87,7 @@ export class LighterWebSocketFeed extends EventEmitter {
   private attachHandlers(): void {
     if (!this.ws) return;
 
-    this.ws.onopen = () => {
+    this.ws.on("open", () => {
       this.reconnectAttempts = 0;
       log.info("WebSocket connected");
       this.emit("event", { type: "connected" } as WsFeedEvent);
@@ -100,38 +101,39 @@ export class LighterWebSocketFeed extends EventEmitter {
       this.subscribeAll();
       this.startPing();
       this.startStaleCheck();
-    };
+    });
 
-    this.ws.onmessage = (event) => {
+    this.ws.on("message", (data) => {
       this.lastMessageAt = Date.now();
       try {
-        const msg = JSON.parse(event.data as string) as WsMessage;
+        const msg = JSON.parse(data.toString()) as WsMessage;
         this.handleMessage(msg);
       } catch (err) {
         log.warn({ err }, "Failed to parse WebSocket message");
       }
-    };
+    });
 
-    this.ws.onerror = (event) => {
+    this.ws.on("error", (event) => {
       log.error({ event }, "WebSocket error");
       this.emit("event", { type: "error", error: new Error("WebSocket error") } as WsFeedEvent);
-    };
+    });
 
-    this.ws.onclose = (event) => {
+    this.ws.on("close", (code, reasonBuffer) => {
       this.clearIntervals();
+      const reason = reasonBuffer.toString();
       log.warn(
-        { code: event.code, reason: event.reason },
+        { code, reason },
         "WebSocket closed"
       );
       this.emit("event", {
         type: "disconnected",
-        reason: event.reason ?? "closed",
+        reason: reason || "closed",
       } as WsFeedEvent);
 
       if (!this.isShuttingDown) {
         this.scheduleReconnect();
       }
-    };
+    });
   }
 
   private subscribeAll(): void {
